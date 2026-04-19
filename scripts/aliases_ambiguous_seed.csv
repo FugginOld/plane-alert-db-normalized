@@ -1,8 +1,0 @@
-raw_value,match_key,reason,source
-jayhawk,H60,ambiguous_alias,seed/public_generated
-jayhawk,BE40,alias_maps_to_multiple_match_keys,seed/public_generated
-merlin,EH10,ambiguous_alias,seed/public_generated
-lynx,LYNX,ambiguous_alias,seed/public_generated
-hornet,F18H,ambiguous_alias,seed/public_generated
-sentry,E3TF,ambiguous_alias,seed/public_generated
-atlas,A400,ambiguous_alias,seed/public_generated

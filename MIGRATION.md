@@ -103,19 +103,19 @@ To apply or extend the taxonomy mapping yourself:
 ```bash
 pip install -r scripts/requirements.txt
 
-python scripts/normalize_aircraft_v5.py plane-alert-db.csv \
-    --lookup scripts/aircraft_type_lookup.csv \
-    --aliases scripts/aircraft_type_aliases.csv
+python scripts/normalize_aircraft_v5.py data/plane-alert-db.csv \
+    --lookup taxonomy/aircraft_type_lookup.csv \
+    --aliases taxonomy/aircraft_type_aliases.csv
 
 # For a production-ready output without diagnostic columns:
-python scripts/normalize_aircraft_v5.py plane-alert-db.csv \
-    --lookup scripts/aircraft_type_lookup.csv \
-    --aliases scripts/aircraft_type_aliases.csv \
+python scripts/normalize_aircraft_v5.py data/plane-alert-db.csv \
+    --lookup taxonomy/aircraft_type_lookup.csv \
+    --aliases taxonomy/aircraft_type_aliases.csv \
     --no-audit-cols
 ```
 
-- Review `plane-alert-db_review.csv` for any rows the normalizer could not classify.
-- Add missing ICAO types to `scripts/aircraft_type_lookup.csv` and re-run.
-- Add free-text type-name variants to `scripts/aircraft_type_aliases.csv` and re-run.
+- Review `data/plane-alert-db_review.csv` for any rows the normalizer could not classify.
+- Add missing ICAO types to `taxonomy/aircraft_type_lookup.csv` and re-run.
+- Add free-text type-name variants to `taxonomy/aircraft_type_aliases.csv` and re-run.
 
 See `scripts/README.md` for full documentation.

@@ -23,8 +23,6 @@ All scripts assume they are run from the **repository root** (not from inside `s
 | `check_categories.py` | Verifies that every Category in `data/plane-alert-db.csv` appears in `data/plane-alert-categories.csv`. |
 | `check_invalid_derivatives.py` | Used by CI to detect hand-edited derivative files. |
 | `validate_schema.py` | Schema-contract checker. Validates column headers, duplicate keys, and taxonomy values in lookup, aliases, and data files. |
-| `check_james_planes.py` | Checks whether planes from a specific issue are already in the main database. |
-| `get_unique_bangers_best_items.py` | Checks whether `data/badgers-best.csv` contains items not in the main database. |
 
 ### Publishing / derivative scripts
 
