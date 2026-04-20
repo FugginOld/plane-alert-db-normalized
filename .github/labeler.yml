@@ -5,4 +5,4 @@ documentation:
 planes:
   - all:
       - changed-files:
-          - any-glob-to-any-file: [*.csv]
+          - any-glob-to-any-file: ["*.csv"]
