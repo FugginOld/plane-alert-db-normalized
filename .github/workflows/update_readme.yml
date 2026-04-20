@@ -15,7 +15,7 @@ on:
 
 jobs:
   updateREADME:
-    if: github.repository == 'FugginOld/aircraft-taxonomy-db' || ${{ vars.CREATE_DERIVATIVES }}
+    if: github.repository == 'FugginOld/aircraft-taxonomy-db' || ${{ vars.CREATE_DERIVATIVES == 'true' }}
     name: Update README.md documentation for Changes
     runs-on: ubuntu-latest
     steps:

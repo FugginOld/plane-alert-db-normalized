@@ -26,7 +26,7 @@ mkdir -p "${LOG_DIR}"
 exec > >(tee -a "${LOG_FILE}") 2>&1
 
 echo "========================================"
-echo "Plane Alert weekly update started: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+echo "aircraft-taxonomy weekly update started: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 echo "========================================"
 
 python "${WORKSPACE}/scripts/weekly_update_pipeline_v3.py" \
@@ -40,5 +40,5 @@ python "${WORKSPACE}/scripts/weekly_update_pipeline_v3.py" \
     --no-audit-cols
 
 echo "========================================"
-echo "Plane Alert weekly update finished: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+echo "aircraft-taxonomy weekly update finished: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 echo "========================================"

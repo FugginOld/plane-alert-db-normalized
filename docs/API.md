@@ -1,4 +1,4 @@
-# Plane Alert DB – HTTP API
+# aircraft-taxonomy-db – HTTP API
 
 The built-in HTTP API exposes supported CSV-backed databases from `data/` as a
 JSON REST API, making them accessible to third-party tools, dashboards, and

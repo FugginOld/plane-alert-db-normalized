@@ -1,4 +1,4 @@
-"""Plane Alert DB – HTTP API
+"""aircraft-taxonomy-db – HTTP API
 
 Serves the CSV databases in /data as a JSON REST API.
 
@@ -93,9 +93,9 @@ def _get_main_df() -> pd.DataFrame:
 # ---------------------------------------------------------------------------
 
 app = FastAPI(
-    title="Plane Alert DB API",
+    title="aircraft-taxonomy-db API",
     description=(
-        "REST API for the Plane Alert aircraft database. "
+        "REST API for the aircraft-taxonomy aircraft database. "
         "Returns JSON representations of CSV data files stored in /data."
     ),
     version="1.0.0",
