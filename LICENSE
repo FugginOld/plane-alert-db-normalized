@@ -1,7 +1,41 @@
 Copyright (C) 2022-2024 by SDR-Enthusiasts, Ramon F. Kolb (kx1t), and contributors
-A list of contributurs can be found at <https://github.com/sdr-enthusiasts/plane-alert-db/graphs/contributors>
+A list of contributors to the original upstream database can be found at <https://github.com/sdr-enthusiasts/plane-alert-db/graphs/contributors>
+A list of contributors to this derivative work can be found at <https://github.com/FugginOld/plane-alert-db-normalized/graphs/contributors>
 
-This {DATA(BASE)-NAME} is made available under the Open Database License: http://opendatacommons.org/licenses/odbl/1.0/.
-Any rights in individual contents of the database are licensed under the Database Contents License: http://opendatacommons.org/licenses/dbcl/1.0/
+This Database is made available under the Open Database License: <https://opendatacommons.org/licenses/odbl/1.0/>.
+Any rights in individual contents of the database are licensed under the Database Contents License: <https://opendatacommons.org/licenses/dbcl/1.0/>
 
-License terms cannot be altered without the prior permission in writing of a majority of the SDR-Enthusiasts Github Organization.
+License terms cannot be altered without the prior permission in writing of a majority of the SDR-Enthusiasts GitHub Organization.
+
+-------------------------------------------------------------------------------
+DERIVATIVE WORK NOTICE
+-------------------------------------------------------------------------------
+
+This repository (https://github.com/FugginOld/plane-alert-db-normalized) is a
+derivative work of the upstream database maintained by the SDR-Enthusiasts
+community at https://github.com/sdr-enthusiasts/plane-alert-db.
+
+The underlying aircraft data (ICAO hex codes, registrations, operators, and
+type designations) originates from the upstream project and is used here in
+accordance with the Open Database License (ODbL v1.0). Under ODbL, this
+derivative work must:
+  1. Attribute the original database and its authors (done above).
+  2. Keep derivative databases open under the same ODbL license.
+  3. Keep the attribution and this notice intact in all copies or
+     substantial uses of the database.
+
+Differences introduced in this derivative work:
+  - The original personality/group-based category scheme (~53 categories) has
+    been replaced with a structured aviation-taxonomy scheme (~24 categories),
+    classifying aircraft by mission type rather than by group membership or
+    cultural association.
+  - Aircraft records carry three structured tags: primary mission role,
+    capability/configuration, and propulsion/airframe type.
+  - Automated data-synchronisation tooling (scripts/, api/, cache/) has been
+    added to keep aircraft metadata current against public canonical sources
+    (OpenSky Network, FAA, ICAO).
+  - A Privacy ICAO Address (PIA) sub-list and a separate aircraft-images list
+    are not maintained in this derivative at this time.
+
+These changes do not affect the authorship or attribution obligations described
+above.
