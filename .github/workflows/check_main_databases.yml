@@ -6,6 +6,9 @@ on:
       - "data/aircraft-taxonomy-db.csv"
       - "data/aircraft-taxonomy-pia.csv"
 
+permissions:
+  contents: read
+
 jobs:
   checkMainDatabases:
     runs-on: ubuntu-latest
