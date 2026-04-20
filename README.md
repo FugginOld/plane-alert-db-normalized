@@ -11,7 +11,7 @@ This project consists of lists of 'interesting' aircraft, formatted as CSV files
 -   [Description of Categories](#description-of-categories)
 -   [CSV Format](#csv-format)
 -   [Contributing](#contributing)
--   [Disclaimer, excuses and dodges](#disclaimer-excuses-and-dodges)
+-   [Disclaimer](#disclaimer)
 -   [Data Sources](#data-sources)
 
 ## Current Content
