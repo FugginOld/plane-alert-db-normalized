@@ -89,9 +89,11 @@ Feel free to [open an issue](https://github.com/FugginOld/plane-alert-db-normali
 
 If you're creating a pull request with additions, please add them to the end of the file. We may sort the list periodically to group like planes together.
 
-## Disclaimer, excuses and dodges
+## Disclaimer
 
-This is not intended to be a definitive list, especially when it comes to aircraft models. Where the same model of aircraft is made by several manufacturers I won't always have the correct one. If you thought it was a Beechcraft King Air 200 and actually it was a Textron Super King Air B200GT, I won't be losing any sleep. There are other data sources (see below) if you want absolute accuracy.
+The information contained in this database is compiled from publicly available sources (see [Data Sources](#data-sources) below) and is provided for informational and research purposes only. While every effort is made to ensure accuracy, the data may be incomplete, out of date, or incorrect. Aircraft registrations, operators, and type designations are subject to change, and discrepancies between this database and official records may exist.
+
+This project and its contributors make no representations or warranties of any kind, express or implied, regarding the accuracy, completeness, reliability, or suitability of the information contained herein. Use of this data is entirely at your own risk. For authoritative and up-to-date information, please consult official sources such as the FAA, ICAO, or the relevant national civil aviation authority.
 
 ## Data Sources
 
