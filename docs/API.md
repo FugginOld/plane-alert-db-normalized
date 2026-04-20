@@ -50,17 +50,30 @@ API_PORT=9000 docker compose up -d api
 
 All endpoints are prefixed with `/api/v1/`.
 
-| Base URL | Description |
-|---|---|
-| `http://localhost:8000/api/v1/` | Local development / self-hosted |
-| `http://localhost:8000/docs` | Interactive Swagger UI |
-| `http://localhost:8000/redoc` | ReDoc documentation |
+| Base URL                              | Description                      |
+| ------------------------------------- | -------------------------------- |
+| `http://localhost:8000/api/v1/`       | Local development / self-hosted  |
+| `http://localhost:8000/docs`          | Interactive Swagger UI           |
+| `http://localhost:8000/redoc`         | ReDoc documentation              |
 
 ---
 
 ## Authentication
 
-No authentication is required.  The API is read-only.
+By default the API is open and read-only — no key is required.
+
+To enable API key protection, set the `API_KEY` environment variable before
+starting the service.  When set, every request to `/api/*` must include a
+matching `X-API-Key` header.  The `/health`, `/docs`, `/redoc`, and
+`/openapi.json` paths are always accessible without a key.
+
+```bash
+API_KEY=mysecretkey docker compose up -d api
+```
+
+```bash
+curl -H "X-API-Key: mysecretkey" http://localhost:8000/api/v1/aircraft
+```
 
 ---
 
@@ -70,11 +83,11 @@ No authentication is required.  The API is read-only.
 
 Liveness probe.  Returns `200 OK` when the service is running.
 
-```
+```http
 GET /health
 ```
 
-**Response**
+#### Response
 
 ```json
 {"status": "ok"}
@@ -86,11 +99,11 @@ GET /health
 
 List all available databases with their file names and row counts.
 
-```
+```http
 GET /api/v1/databases
 ```
 
-**Response** (array)
+#### Response (array)
 
 ```json
 [
@@ -113,24 +126,24 @@ Available database names: `main`, `civ`, `mil`, `pol`, `gov`, `pia`, `wip`.
 
 Return rows from a named database.
 
-```
+```http
 GET /api/v1/databases/mil?limit=50&offset=0
 ```
 
-**Path parameters**
+#### Path parameters
 
-| Parameter | Type   | Description |
-|-----------|--------|-------------|
+| Parameter | Type   | Description                                             |
+| --------- | ------ | ------------------------------------------------------- |
 | `name`    | string | One of `main`, `civ`, `mil`, `pol`, `gov`, `pia`, `wip` |
 
-**Query parameters**
+#### Query parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `limit`   | int  | `100`   | Max rows (1–1000) |
-| `offset`  | int  | `0`     | Pagination offset |
+| Parameter | Type | Default | Description        |
+| --------- | ---- | ------- | ------------------ |
+| `limit`   | int  | `100`   | Max rows (1–1000)  |
+| `offset`  | int  | `0`     | Pagination offset  |
 
-**Response**
+#### Response
 
 ```json
 {
@@ -163,26 +176,26 @@ GET /api/v1/databases/mil?limit=50&offset=0
 Search and filter the main aircraft database.  All text filters are
 case-insensitive; multiple filters are AND-combined.
 
-```
+```http
 GET /api/v1/aircraft?category=Tanker&cmpg=Mil&limit=20
 ```
 
-**Query parameters**
+#### Query parameters
 
-| Parameter      | Type   | Default | Description |
-|----------------|--------|---------|-------------|
-| `icao`         | string | —       | Partial ICAO hex match |
-| `registration` | string | —       | Partial registration match |
-| `operator`     | string | —       | Partial operator name match |
-| `type`         | string | —       | Partial aircraft type match |
-| `icao_type`    | string | —       | Exact ICAO type code |
-| `cmpg`         | string | —       | Exact group: `Civ`, `Mil`, `Pol`, or `Gov` |
-| `category`     | string | —       | Exact category name (see `/api/v1/categories`) |
-| `tag`          | string | —       | Substring match across Tag 1, Tag 2, and Tag 3 |
-| `limit`        | int    | `100`   | Max rows (1–1000) |
-| `offset`       | int    | `0`     | Pagination offset |
+| Parameter      | Type   | Default | Description                                             |
+| -------------- | ------ | ------- | ------------------------------------------------------- |
+| `icao`         | string | —       | Partial ICAO hex match                                  |
+| `registration` | string | —       | Partial registration match                              |
+| `operator`     | string | —       | Partial operator name match                             |
+| `type`         | string | —       | Partial aircraft type match                             |
+| `icao_type`    | string | —       | Exact ICAO type code                                    |
+| `cmpg`         | string | —       | Exact group: `Civ`, `Mil`, `Pol`, or `Gov`              |
+| `category`     | string | —       | Exact category name (see `/api/v1/categories`)          |
+| `tag`          | string | —       | Substring match across Tag 1, Tag 2, and Tag 3          |
+| `limit`        | int    | `100`   | Max rows (1–1000)                                       |
+| `offset`       | int    | `0`     | Pagination offset                                       |
 
-**Examples**
+#### Examples
 
 ```bash
 # All KC-135 tankers
@@ -198,7 +211,7 @@ curl "http://localhost:8000/api/v1/aircraft?category=UAV+-+Recon"
 curl "http://localhost:8000/api/v1/aircraft?icao=AE"
 ```
 
-**Response**
+#### Response
 
 ```json
 {
@@ -215,17 +228,17 @@ curl "http://localhost:8000/api/v1/aircraft?icao=AE"
 
 Fetch a single aircraft record by its exact ICAO 24-bit hex address.
 
-```
+```http
 GET /api/v1/aircraft/AE01CE
 ```
 
-**Path parameters**
+#### Path parameters
 
-| Parameter | Type   | Description |
-|-----------|--------|-------------|
-| `icao`    | string | Exact ICAO hex (case-insensitive, e.g. `AE01CE`) |
+| Parameter | Type   | Description                                         |
+| --------- | ------ | --------------------------------------------------- |
+| `icao`    | string | Exact ICAO hex (case-insensitive, e.g. `AE01CE`)    |
 
-**Response**
+#### Response
 
 ```json
 {
@@ -250,11 +263,11 @@ Returns `404` if not found.
 
 List all distinct aircraft category names present in the main database.
 
-```
+```http
 GET /api/v1/categories
 ```
 
-**Response** (sorted array of strings)
+#### Response (sorted array of strings)
 
 ```json
 [
