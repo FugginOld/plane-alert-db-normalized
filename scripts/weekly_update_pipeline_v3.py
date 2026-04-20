@@ -72,7 +72,9 @@ def main() -> int:
     ws = Path(args.workspace).resolve()
     cache_dir = (ws / args.cache_dir).resolve()
     outdir = (ws / "build" / "weekly_update").resolve()
+    review_dir = (ws / "review").resolve()
     outdir.mkdir(parents=True, exist_ok=True)
+    review_dir.mkdir(parents=True, exist_ok=True)
     published_aliases = ws / "taxonomy" / "aircraft_type_aliases.csv"
     published_lookup = ws / "taxonomy" / "aircraft_type_lookup.csv"
 
@@ -151,7 +153,7 @@ def main() -> int:
                 shutil.move(str(normalized), str(plane_file))
                 refreshed += 1
             if review.exists():
-                shutil.move(str(review), str(ws / review.name))
+                shutil.move(str(review), str(review_dir / review.name))
 
     manifest = {
         "timestamp_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),

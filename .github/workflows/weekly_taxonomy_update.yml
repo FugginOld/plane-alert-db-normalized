@@ -96,3 +96,4 @@ jobs:
             data/plane-alert-db.csv
             data/plane-alert-pia.csv
             data/plane-alert-wip.csv
+            review/plane-alert-*_review.csv

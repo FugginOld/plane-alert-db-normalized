@@ -12,6 +12,7 @@ All scripts assume they are run from the **repository root** (not from inside `s
 | `taxonomy/` | Taxonomy reference files (lookup seed, canonical lookup / aliases). |
 | `cache/public_sources/` | Downloaded public aircraft database snapshots (gitignored). |
 | `build/weekly_update/` | Intermediate pipeline artefacts from the weekly run (gitignored). |
+| `review/` | Committed review-queue CSVs produced by weekly normalisation runs. |
 
 ## Script catalogue
 
@@ -108,6 +109,8 @@ After running, inspect `data/plane-alert-db_review.csv`. For each unresolved row
 2. Add an alias for the free-text `$Type` value to `taxonomy/aircraft_type_aliases.csv` (and the seed).
 
 Then re-run until the review file is empty (or acceptably small).
+
+When running `weekly_update_pipeline_v3.py`, generated `plane-alert-*_review.csv` files are moved into `review/`.
 
 ### Important: `#CMPG` passthrough
 
