@@ -31,10 +31,10 @@ and on the weekly schedule (every Sunday at 03:15 local time).
 |---|---|
 | Docker ≥ 20.10 | Or compatible container runtime. |
 | systemd | Standard on most modern Linux distributions. |
-| Cloned repository | `git clone https://github.com/FugginOld/plane-alert-db-normalized.git` |
+| Cloned repository | `git clone https://github.com/FugginOld/aircraft-taxonomy-db.git` |
 
 All commands below assume you have cloned the repository to
-`/opt/plane-alert-db-normalized` (adjust the path to match your environment).
+`/opt/aircraft-taxonomy-db` (adjust the path to match your environment).
 
 ---
 
@@ -43,7 +43,7 @@ All commands below assume you have cloned the repository to
 Run from the **repository root**:
 
 ```bash
-cd /opt/plane-alert-db-normalized
+cd /opt/aircraft-taxonomy-db
 docker build -t plane-alert-db:latest .
 ```
 
@@ -57,21 +57,21 @@ are persisted automatically.
 
 ## Run the weekly update once (manual)
 
-Replace `/opt/plane-alert-db-normalized` with your actual repo path:
+Replace `/opt/aircraft-taxonomy-db` with your actual repo path:
 
 ```bash
 docker run --rm \
-    -v /opt/plane-alert-db-normalized/data:/workspace/data \
-    -v /opt/plane-alert-db-normalized/taxonomy:/workspace/taxonomy \
-    -v /opt/plane-alert-db-normalized/cache:/workspace/cache \
-    -v /opt/plane-alert-db-normalized/build:/workspace/build \
-    -v /opt/plane-alert-db-normalized/logs:/workspace/logs \
+    -v /opt/aircraft-taxonomy-db/data:/workspace/data \
+    -v /opt/aircraft-taxonomy-db/taxonomy:/workspace/taxonomy \
+    -v /opt/aircraft-taxonomy-db/cache:/workspace/cache \
+    -v /opt/aircraft-taxonomy-db/build:/workspace/build \
+    -v /opt/aircraft-taxonomy-db/logs:/workspace/logs \
     plane-alert-db:latest \
     /workspace/docker/weekly_update.sh
 ```
 
 Output is written to both the terminal and
-`/opt/plane-alert-db-normalized/logs/weekly_aircraft_update.log`.
+`/opt/aircraft-taxonomy-db/logs/weekly_aircraft_update.log`.
 
 ---
 
@@ -79,11 +79,11 @@ Output is written to both the terminal and
 
 ```bash
 docker run --rm -it \
-    -v /opt/plane-alert-db-normalized/data:/workspace/data \
-    -v /opt/plane-alert-db-normalized/taxonomy:/workspace/taxonomy \
-    -v /opt/plane-alert-db-normalized/cache:/workspace/cache \
-    -v /opt/plane-alert-db-normalized/build:/workspace/build \
-    -v /opt/plane-alert-db-normalized/logs:/workspace/logs \
+    -v /opt/aircraft-taxonomy-db/data:/workspace/data \
+    -v /opt/aircraft-taxonomy-db/taxonomy:/workspace/taxonomy \
+    -v /opt/aircraft-taxonomy-db/cache:/workspace/cache \
+    -v /opt/aircraft-taxonomy-db/build:/workspace/build \
+    -v /opt/aircraft-taxonomy-db/logs:/workspace/logs \
     plane-alert-db:latest \
     /bin/bash
 ```
@@ -110,7 +110,7 @@ python scripts/validate_schema.py \
    sudo cp systemd/plane-alert-weekly.env.example /etc/plane-alert-weekly.env
    sudo nano /etc/plane-alert-weekly.env
    # Set REPO_DIR to your actual repository path, e.g.:
-   # REPO_DIR=/opt/plane-alert-db-normalized
+   # REPO_DIR=/opt/aircraft-taxonomy-db
    ```
 
 2. **Copy the unit files** to the systemd system directory:
@@ -173,11 +173,11 @@ journalctl -u plane-alert-weekly.service --no-pager
 Each run also appends a timestamped record to the log file on the host:
 
 ```
-/opt/plane-alert-db-normalized/logs/weekly_aircraft_update.log
+/opt/aircraft-taxonomy-db/logs/weekly_aircraft_update.log
 ```
 
 ```bash
-tail -n 100 /opt/plane-alert-db-normalized/logs/weekly_aircraft_update.log
+tail -n 100 /opt/aircraft-taxonomy-db/logs/weekly_aircraft_update.log
 ```
 
 ---

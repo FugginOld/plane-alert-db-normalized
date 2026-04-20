@@ -24,7 +24,7 @@ on:
 
 jobs:
   weeklyTaxonomyUpdate:
-    if: ${{ github.repository == 'FugginOld/plane-alert-db-normalized' || vars.RUN_WEEKLY_UPDATE == 'true' }}
+    if: ${{ github.repository == 'FugginOld/aircraft-taxonomy-db' || vars.RUN_WEEKLY_UPDATE == 'true' }}
     name: Refresh taxonomy references and re-normalise data
     runs-on: ubuntu-latest
 

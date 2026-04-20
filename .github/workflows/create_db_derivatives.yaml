@@ -12,7 +12,7 @@ on:
 
 jobs:
   createDerivativeDatabases:
-    if: ${{ github.repository == 'fugginold/plane-alert-db-normalized' || vars.CREATE_DERIVATIVES }}
+    if: ${{ github.repository == 'fugginold/aircraft-taxonomy-db' || vars.CREATE_DERIVATIVES }}
     name: Update derivative databases
     runs-on: ubuntu-latest
     steps:

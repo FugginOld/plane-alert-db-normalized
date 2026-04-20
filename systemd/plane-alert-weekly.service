@@ -11,7 +11,7 @@ TimeoutStartSec=0
 
 # Path to the cloned repository on the host.
 # Create /etc/plane-alert-weekly.env and set REPO_DIR before enabling.
-# Example: REPO_DIR=/opt/plane-alert-db-normalized
+# Example: REPO_DIR=/opt/aircraft-taxonomy-db
 EnvironmentFile=/etc/plane-alert-weekly.env
 
 # Remove the container after the run completes.

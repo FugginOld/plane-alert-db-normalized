@@ -1,6 +1,6 @@
 Copyright (C) 2022-2024 by SDR-Enthusiasts, Ramon F. Kolb (kx1t), and contributors
 A list of contributors to the original upstream database can be found at <https://github.com/sdr-enthusiasts/plane-alert-db/graphs/contributors>
-A list of contributors to this derivative work can be found at <https://github.com/FugginOld/plane-alert-db-normalized/graphs/contributors>
+A list of contributors to this derivative work can be found at <https://github.com/FugginOld/aircraft-taxonomy-db/graphs/contributors>
 
 This Database is made available under the Open Database License: <https://opendatacommons.org/licenses/odbl/1.0/>.
 Any rights in individual contents of the database are licensed under the Database Contents License: <https://opendatacommons.org/licenses/dbcl/1.0/>
@@ -11,7 +11,7 @@ License terms cannot be altered without the prior permission in writing of a maj
 DERIVATIVE WORK NOTICE
 -------------------------------------------------------------------------------
 
-This repository (https://github.com/FugginOld/plane-alert-db-normalized) is a
+This repository (https://github.com/FugginOld/aircraft-taxonomy-db) is a
 derivative work of the upstream database maintained by the SDR-Enthusiasts
 community at https://github.com/sdr-enthusiasts/plane-alert-db.
 

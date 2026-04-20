@@ -82,7 +82,7 @@ Column prefix conventions:
 
 ## Contributing
 
-Feel free to [open an issue](https://github.com/FugginOld/plane-alert-db-normalized/issues) if you have ideas on improving this repository or want to report a bug! All contributions are welcome 🚀. Please consult the [contribution guidelines](CONTRIBUTING.md) for more information. You can also check out the [TODOS](TODOS.md) page if you want to contribute to this repository but need some ideas.
+Feel free to [open an issue](https://github.com/FugginOld/aircraft-taxonomy-db/issues) if you have ideas on improving this repository or want to report a bug! All contributions are welcome 🚀. Please consult the [contribution guidelines](CONTRIBUTING.md) for more information. You can also check out the [TODOS](TODOS.md) page if you want to contribute to this repository but need some ideas.
 
 > **Warning**
 > As also [explained above](#current-content), this repository has two main databases to which people can contribute: `plane-alert-db.csv` and `plane-alert-pia.csv`. The derivative databases (`civ`, `mil`, `pol`, `gov`) are created automatically by a [GitHub Action](.github/workflows/create_db_derivatives.yaml) and must not be edited directly — any manual changes will be overwritten. Additionally, it is **not recommended** to edit the CSV files in Microsoft Excel, as Excel will attempt to "fix" some ICAO hexes and other fields. Use a code editor such as VS Code instead—press the period key `.` on any file in GitHub to open the web editor.
@@ -106,7 +106,7 @@ The following canonical public sources are used by `scripts/sync_public_aircraft
 ## LICENSE
 
 Copyright (C) 2022–2024 by SDR-Enthusiasts, Ramon F. Kolb (kx1t), and contributors.
-A list of contributors can be found at <https://github.com/FugginOld/plane-alert-db-normalized/graphs/contributors>
+A list of contributors can be found at <https://github.com/FugginOld/aircraft-taxonomy-db/graphs/contributors>
 
 This Database is made available under the Open Database License: <http://opendatacommons.org/licenses/odbl/1.0/>
 Any rights in individual contents of the database are licensed under the Database Contents License: <http://opendatacommons.org/licenses/dbcl/1.0/>

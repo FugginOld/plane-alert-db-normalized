@@ -27,8 +27,8 @@ scripts without having to parse CSV files directly.
 
 ```bash
 # Clone the repo (if you haven't already)
-git clone https://github.com/FugginOld/plane-alert-db-normalized.git
-cd plane-alert-db-normalized
+git clone https://github.com/FugginOld/aircraft-taxonomy-db.git
+cd aircraft-taxonomy-db
 
 # Start the API service
 docker compose up -d api
