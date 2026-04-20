@@ -37,26 +37,38 @@ jobs:
       - name: Add 'invalid' label if trigger PR check failed
         if: github.event.workflow_run.conclusion == 'failure'
         uses: actions/github-script@v9.0.0
+        env:
+          ISSUE_NUMBER: ${{ steps.changed.outputs.issue_number }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+            const issueNumber = Number.parseInt(process.env.ISSUE_NUMBER || "", 10);
+            if (!Number.isInteger(issueNumber) || issueNumber <= 0) {
+              throw new Error("Invalid issue number from artifact output");
+            }
             github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: ${{ steps.changed.outputs.issue_number }},
+              issue_number: issueNumber,
               labels: ['invalid']
             })
       - name: Remove 'invalid' label if trigger PR check was successful
         if: github.event.workflow_run.conclusion == 'success'
         uses: actions/github-script@v9.0.0
+        env:
+          ISSUE_NUMBER: ${{ steps.changed.outputs.issue_number }}
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+            const issueNumber = Number.parseInt(process.env.ISSUE_NUMBER || "", 10);
+            if (!Number.isInteger(issueNumber) || issueNumber <= 0) {
+              throw new Error("Invalid issue number from artifact output");
+            }
             try {
               await github.rest.issues.removeLabel({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: ${{ steps.changed.outputs.issue_number }},
+                issue_number: issueNumber,
                 name: 'invalid'
               });
             } catch (err) {
