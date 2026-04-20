@@ -13,7 +13,7 @@ The new system classifies every aircraft by **what it is** — its role, mission
 The table below shows how the old personality categories map to the new taxonomy. Many old categories spanned several aircraft types; the mapping is therefore approximate.
 
 | Old Category | New Category (most common match) |
-|---|---|
+| --- | --- |
 | USAF | *(varies by aircraft type — e.g. Fighter / Interceptor, Tanker, Strategic Airlift, Trainer, ISR / Surveillance)* |
 | Other Air Forces | *(varies by aircraft type)* |
 | RAF | *(varies by aircraft type)* |
@@ -74,7 +74,7 @@ The table below shows how the old personality categories map to the new taxonomy
 Each aircraft carries up to three structured tags. The old tag fields carried free-text narrative phrases (*"Marching Powder"*, *"Through Hardships To The Stars"*, etc.). Those are replaced with enumerated values:
 
 | Field | Old style | New style | Allowed values |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `$Tag 1` | Narrative / callout phrase | Primary mission role | `Tactical Transport`, `Strategic Transport`, `Maritime Patrol`, `ISR`, `Early Warning`, `Air Superiority`, `Strike`, `Close Air Support`, `Refueling`, `Training`, `Utility`, `Electronic Warfare` |
 | `$#Tag 2` | Narrative / callout phrase | Capability or configuration | `STOL`, `Long Range`, `Short Runway`, `Heavy Lift`, `Medium Lift`, `Multi-Role`, `All-Weather`, `High Endurance`, `Aerial Refueling`, `Carrier Capable`, `Amphibious`, `Basic Trainer`, `Light Lift`, `Low Altitude` |
 | `$#Tag 3` | Narrative / callout phrase | Propulsion or airframe | `Twin Turboprop`, `Turboprop`, `Twin Engine`, `Quad Engine`, `Jet`, `High Wing`, `Low Wing`, `Rear Ramp`, `Side Door`, `Pressurized`, `Sensor Suite`, `Modular Cabin`, `Single Engine`, `Rotorcraft` |
