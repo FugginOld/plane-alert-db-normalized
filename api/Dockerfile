@@ -14,6 +14,10 @@ COPY api/main.py ./main.py
 # Falls back to /app/data if no mount is provided (useful for testing).
 ENV DATA_DIR=/data
 
+# Run as non-root user.
+RUN useradd --no-create-home --shell /bin/false appuser
+USER appuser
+
 EXPOSE 8000
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

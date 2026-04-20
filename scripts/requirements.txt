@@ -1,5 +1,5 @@
-pandas
-numpy
-requests
-gitpython
-chevron
+pandas>=2.2.0,<3
+numpy>=1.26.0,<3
+requests>=2.31.0,<3
+gitpython>=3.1.40,<4
+chevron>=0.14.0,<1

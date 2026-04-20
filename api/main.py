@@ -33,14 +33,21 @@ from pathlib import Path
 from typing import Any
 
 import pandas as pd
-from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import RedirectResponse
+from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi.responses import JSONResponse, RedirectResponse
 
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
 
 DATA_DIR = Path(os.environ.get("DATA_DIR", Path(__file__).parent.parent / "data"))
+
+# When API_KEY is set, every request to /api/* must supply a matching
+# X-API-Key header.  Leave unset (or empty) to run in open-access mode.
+_API_KEY: str | None = os.environ.get("API_KEY") or None
+
+# Paths that are always open regardless of API_KEY
+_OPEN_PATHS = {"/", "/health", "/docs", "/redoc", "/openapi.json"}
 
 # Databases that can be served via /api/v1/databases/{name}
 _DB_STEMS: dict[str, str] = {
@@ -102,6 +109,15 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
 )
+
+
+@app.middleware("http")
+async def api_key_middleware(request: Request, call_next):
+    if _API_KEY and request.url.path not in _OPEN_PATHS:
+        provided = request.headers.get("X-API-Key")
+        if provided != _API_KEY:
+            return JSONResponse(status_code=401, content={"detail": "Invalid or missing API key."})
+    return await call_next(request)
 
 
 # ---------------------------------------------------------------------------

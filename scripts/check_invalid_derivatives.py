@@ -44,7 +44,7 @@ if __name__ == "__main__":
             logging.info(f"Invalid derivative files: {changed_files}")
             with open(OUTPUT_FILE, "a") as fh:
                 print(
-                    "derivatives_changed={}".format(str(len(["test"]) >= 1).lower()),
+                    "derivatives_changed={}".format(str(len(changed_files) >= 1).lower()),
                     file=fh,
                 )
         else:

@@ -15,12 +15,18 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import logging
 from pathlib import Path
 import shutil
 import subprocess
 import sys
 from datetime import datetime, timezone
 from typing import Optional
+
+logging.basicConfig(
+    format="%(asctime)s %(levelname)-8s [%(name)s] %(message)s", level=logging.INFO
+)
+logger = logging.getLogger(__name__)
 
 def sha256_file(path: Path) -> str:
     h = hashlib.sha256()
@@ -48,7 +54,7 @@ def replace_if_changed(src: Path, dest: Path) -> bool:
     return True
 
 def run(cmd: list[str], cwd: Optional[Path] = None) -> None:
-    print("+", " ".join(cmd))
+    logger.info("+ %s", " ".join(cmd))
     subprocess.run(cmd, cwd=str(cwd) if cwd else None, check=True)
 
 def main() -> int:

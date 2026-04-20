@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 import csv
 import argparse
+import logging
 import os
 import re
 import sys
 from typing import Dict, List, Optional, Tuple
+
+from taxonomy_constants import ALLOWED_CATEGORIES, VALID_TAG1, VALID_TAG2, VALID_TAG3
 
 # ----------------------------
 # Scale-oriented normalizer
@@ -23,32 +26,10 @@ from typing import Dict, List, Optional, Tuple
 #       the aviation taxonomy and is used by create_db_derivatives.py to
 #       generate the derivative CSV files (aircraft-taxonomy-mil.csv, etc.).
 
-ALLOWED_CATEGORIES = {
-    "Tactical Airlift",
-    "Strategic Airlift",
-    "Maritime Patrol",
-    "ISR / Surveillance",
-    "AEW&C",
-    "Fighter / Interceptor",
-    "Attack / Strike",
-    "Electronic Warfare",
-    "Tanker",
-    "Trainer",
-    "Special Mission",
-    "Utility",
-    "Helicopter - Transport",
-    "Helicopter - Attack",
-    "Helicopter - Utility",
-    "Helicopter - Maritime",
-    "UAV - Recon",
-    "UAV - Combat",
-    "UAV - Utility",
-    "Passenger - Narrowbody",
-    "Passenger - Widebody",
-    "Regional Passenger",
-    "Business Jet",
-    "Cargo Freighter",
-}
+logging.basicConfig(
+    format="%(asctime)s %(levelname)-8s [%(name)s] %(message)s", level=logging.INFO
+)
+logger = logging.getLogger(__name__)
 
 # Canonical mapping lets you salvage a few common near-misses safely.
 CATEGORY_CANONICAL_MAP = {
@@ -185,55 +166,6 @@ BLACKLIST_PATTERNS = [
 CATEGORY_PATTERN_RE = [re.compile(p, re.IGNORECASE) for p in BLACKLIST_PATTERNS]
 URL_RE = re.compile(r"^https?://", re.IGNORECASE)
 PHRASEY_RE = re.compile(r"[!?]|([A-Za-z]+\s+){4,}[A-Za-z]+")
-
-VALID_TAG1 = {
-    "Tactical Transport",
-    "Strategic Transport",
-    "Maritime Patrol",
-    "ISR",
-    "Early Warning",
-    "Air Superiority",
-    "Strike",
-    "Close Air Support",
-    "Refueling",
-    "Training",
-    "Utility",
-    "Electronic Warfare",
-}
-
-VALID_TAG2 = {
-    "STOL",
-    "Long Range",
-    "Short Runway",
-    "Heavy Lift",
-    "Medium Lift",
-    "Multi-Role",
-    "All-Weather",
-    "High Endurance",
-    "Aerial Refueling",
-    "Carrier Capable",
-    "Amphibious",
-    "Basic Trainer",
-    "Light Lift",
-    "Low Altitude",
-}
-
-VALID_TAG3 = {
-    "Twin Turboprop",
-    "Turboprop",
-    "Twin Engine",
-    "Quad Engine",
-    "Jet",
-    "High Wing",
-    "Low Wing",
-    "Rear Ramp",
-    "Side Door",
-    "Pressurized",
-    "Sensor Suite",
-    "Modular Cabin",
-    "Single Engine",
-    "Rotorcraft",
-}
 
 TAG_FIELDS = ("$Tag 1", "$#Tag 2", "$#Tag 3")
 REQUIRED_LOOKUP_COLUMNS = {
@@ -555,12 +487,12 @@ def main() -> int:
         lookup = load_lookup(args.lookup)
         aliases = load_aliases(args.aliases)
     except Exception as exc:
-        print(f"ERROR loading support files: {exc}", file=sys.stderr)
+        logger.error("Loading support files failed: %s", exc)
         return 2
 
     files = iter_input_files(args.inputs)
     if not files:
-        print("ERROR: No input files found.", file=sys.stderr)
+        logger.error("No input files found.")
         return 2
 
     total = {
@@ -578,25 +510,27 @@ def main() -> int:
         try:
             output_path, review_path, stats = process_file(path, lookup, aliases, no_audit_cols=args.no_audit_cols)
         except Exception as exc:
-            print(f"ERROR processing {path}: {exc}", file=sys.stderr)
+            logger.error("Processing %s failed: %s", path, exc)
             continue
 
-        print(f"Processed: {path}")
-        print(f"  Normalized: {output_path}")
-        print(f"  Review:     {review_path}")
-        print(
-            f"  Stats: total={stats['rows_total']} normalized={stats['rows_normalized']} "
-            f"review={stats['rows_review']} matched_lookup={stats['matched_lookup']} unmatched={stats['unmatched']}"
+        logger.info("Processed: %s", path)
+        logger.info("  Normalized: %s", output_path)
+        logger.info("  Review:     %s", review_path)
+        logger.info(
+            "  Stats: total=%d normalized=%d review=%d matched_lookup=%d unmatched=%d",
+            stats['rows_total'], stats['rows_normalized'], stats['rows_review'],
+            stats['matched_lookup'], stats['unmatched'],
         )
 
         for key in total:
             total[key] += stats.get(key, 0)
 
-    print("\nRun summary")
-    print(
-        f"  total_rows={total['rows_total']} normalized={total['rows_normalized']} review={total['rows_review']} "
-        f"matched_lookup={total['matched_lookup']} matched_icao={total['matched_icao']} "
-        f"matched_type_exact={total['matched_type_exact']} matched_alias={total['matched_alias']} unmatched={total['unmatched']}"
+    logger.info(
+        "Run summary: total_rows=%d normalized=%d review=%d "
+        "matched_lookup=%d matched_icao=%d matched_type_exact=%d matched_alias=%d unmatched=%d",
+        total['rows_total'], total['rows_normalized'], total['rows_review'],
+        total['matched_lookup'], total['matched_icao'],
+        total['matched_type_exact'], total['matched_alias'], total['unmatched'],
     )
     return 0
 

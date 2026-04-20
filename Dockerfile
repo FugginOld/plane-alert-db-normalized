@@ -28,6 +28,10 @@ RUN mkdir -p \
 # Make the weekly-update wrapper executable.
 RUN chmod +x docker/weekly_update.sh
 
+# Run as non-root user.
+RUN useradd --no-create-home --shell /bin/false appuser
+USER appuser
+
 # Default command: interactive Bash shell.
 # Override with a specific command when running non-interactively,
 # e.g.:  docker run … aircraft-taxonomy-db /workspace/docker/weekly_update.sh

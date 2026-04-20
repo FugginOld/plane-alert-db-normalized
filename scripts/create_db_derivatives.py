@@ -17,7 +17,7 @@ if __name__ == "__main__":
     df = unsort_df.sort_values(by=["$ICAO"], ascending=True)
     df.to_csv(
         "data/aircraft-taxonomy-db.csv",
-        mode="wb",
+        mode="w",
         index=False,
         header=True,
         encoding="utf8",
@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     logging.info("Creating the category CSV files...")
     for category in df["#CMPG"].unique():
-        if category != category:  # Skip N/A values.
+        if pd.isna(category):  # Skip N/A values.
             continue
 
         # Create category CSV files.
@@ -36,7 +36,7 @@ if __name__ == "__main__":
         category_df.to_csv(
             f"data/aircraft-taxonomy-{category.lower()}.csv",
             index=False,
-            mode="wb",
+            mode="w",
             encoding="utf8",
             lineterminator="\n",
         )

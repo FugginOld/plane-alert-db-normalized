@@ -20,41 +20,18 @@ from __future__ import annotations
 
 import argparse
 import csv
+import logging
 import re
 import sys
 from pathlib import Path
 from typing import List, Sequence
 
-# ---------------------------------------------------------------------------
-# Allowed taxonomy values (must match normalize_aircraft_v5.py)
-# ---------------------------------------------------------------------------
+from taxonomy_constants import ALLOWED_CATEGORIES
 
-ALLOWED_CATEGORIES = {
-    "AEW&C",
-    "Attack / Strike",
-    "Business Jet",
-    "Cargo Freighter",
-    "Electronic Warfare",
-    "Fighter / Interceptor",
-    "Helicopter - Attack",
-    "Helicopter - Maritime",
-    "Helicopter - Transport",
-    "Helicopter - Utility",
-    "ISR / Surveillance",
-    "Maritime Patrol",
-    "Passenger - Narrowbody",
-    "Passenger - Widebody",
-    "Regional Passenger",
-    "Special Mission",
-    "Strategic Airlift",
-    "Tactical Airlift",
-    "Tanker",
-    "Trainer",
-    "UAV - Combat",
-    "UAV - Recon",
-    "UAV - Utility",
-    "Utility",
-}
+logging.basicConfig(
+    format="%(asctime)s %(levelname)-8s [%(name)s] %(message)s", level=logging.INFO
+)
+logger = logging.getLogger(__name__)
 
 LOOKUP_REQUIRED = {"match_key", "normalized_type", "category", "tag1", "tag2", "tag3"}
 ALIAS_REQUIRED = {"raw_value", "match_key"}
@@ -219,18 +196,17 @@ def main(argv: Sequence[str] | None = None) -> int:
             all_warnings.extend(soft)
 
     for warning in all_warnings:
-        print(f"WARNING: {warning}", file=sys.stderr)
+        logger.warning(warning)
 
     if all_errors:
         for error in all_errors:
-            print(f"ERROR: {error}", file=sys.stderr)
-        print(f"\nSchema validation FAILED: {len(all_errors)} error(s), {len(all_warnings)} warning(s).",
-              file=sys.stderr)
+            logger.error(error)
+        logger.error("Schema validation FAILED: %d error(s), %d warning(s).", len(all_errors), len(all_warnings))
         return 1
 
-    print(
-        f"Schema validation PASSED: lookup={args.lookup}, aliases={args.aliases}, "
-        f"data_files={args.data_files or []}, warnings={len(all_warnings)}."
+    logger.info(
+        "Schema validation PASSED: lookup=%s, aliases=%s, data_files=%s, warnings=%d.",
+        args.lookup, args.aliases, args.data_files or [], len(all_warnings),
     )
     return 0
 

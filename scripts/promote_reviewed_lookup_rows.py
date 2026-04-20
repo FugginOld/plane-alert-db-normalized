@@ -9,7 +9,13 @@ from __future__ import annotations
 
 import argparse
 import csv
+import logging
 from pathlib import Path
+
+logging.basicConfig(
+    format="%(asctime)s %(levelname)-8s [%(name)s] %(message)s", level=logging.INFO
+)
+logger = logging.getLogger(__name__)
 
 REQUIRED = ["match_key", "normalized_type", "category", "tag1", "tag2", "tag3"]
 
@@ -47,7 +53,7 @@ def main() -> int:
     target = load_rows(target_path)
     target.update(reviewed)
     write_rows(target_path, target)
-    print(f"Promoted {len(reviewed)} row(s) into {target_path}")
+    logger.info("Promoted %d row(s) into %s", len(reviewed), target_path)
     return 0
 
 
