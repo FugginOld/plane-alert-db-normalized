@@ -97,7 +97,7 @@ This project and its contributors make no representations or warranties of any k
 
 ## Data Sources
 
-Current public source cache manifest (`cache/public_sources/manifest.json`) includes:
+The following canonical public sources are used by `scripts/sync_public_aircraft_sources.py` to build the local cache (`cache/public_sources/manifest.json`, generated at runtime and not committed to this repository):
 
 -   <https://opensky-network.org/datasets/metadata/aircraftDatabase.csv>
 -   <https://www.faa.gov/documentLibrary/media/Order/7340.2P_dtd_8-7-25.pdf>
