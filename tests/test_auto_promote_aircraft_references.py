@@ -8,18 +8,21 @@ from pathlib import Path
 def load_module():
     module_path = Path(__file__).resolve().parents[1] / "scripts" / "auto_promote_aircraft_references.py"
     spec = importlib.util.spec_from_file_location("auto_promote_aircraft_references", module_path)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Could not load module spec for {module_path}")
     module = importlib.util.module_from_spec(spec)
-    assert spec and spec.loader
     spec.loader.exec_module(module)
     return module
 
 
-mod = load_module()
-
-
 class TestAutoPromoteAircraftReferences(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.mod = load_module()
+
     def test_lookup_confidence_high_signal_path(self):
-        score, reasons = mod.lookup_confidence(
+        score, reasons = self.mod.lookup_confidence(
             {
                 "match_key": " a320 ",
                 "normalized_type": "Airbus A320",
@@ -35,7 +38,7 @@ class TestAutoPromoteAircraftReferences(unittest.TestCase):
         self.assertIn("multi_source_support", reasons)
 
     def test_lookup_confidence_handles_invalid_numbers(self):
-        score, reasons = mod.lookup_confidence(
+        score, reasons = self.mod.lookup_confidence(
             {
                 "match_key": "B738",
                 "normalized_type": "Boeing 737-800",
@@ -50,7 +53,7 @@ class TestAutoPromoteAircraftReferences(unittest.TestCase):
         self.assertNotIn("multi_source_support", reasons)
 
     def test_alias_confidence_collision_penalty_and_floor(self):
-        score, reasons = mod.alias_confidence(
+        score, reasons = self.mod.alias_confidence(
             {
                 "raw_value": "Boeing 737",
                 "match_key": "B738",
@@ -62,7 +65,7 @@ class TestAutoPromoteAircraftReferences(unittest.TestCase):
         self.assertAlmostEqual(score, 0.45)
         self.assertIn("collision_penalty", reasons)
 
-        low_score, _ = mod.alias_confidence(
+        low_score, _ = self.mod.alias_confidence(
             {"raw_value": "x", "match_key": "A1", "public_collision_count": "50"}
         )
         self.assertAlmostEqual(low_score, 0.0)
@@ -75,7 +78,7 @@ class TestAutoPromoteAircraftReferences(unittest.TestCase):
             {"match_key": "B738", "normalized_type": "B737-800", "validation_status": "validated", "validation_reason": "exact_model_match", "public_model_count": "1", "public_source_count": "2"},
             {"match_key": "C172", "normalized_type": "Skyhawk", "validation_status": "pending", "validation_reason": "match_key_present"},
         ]
-        final_rows, promoted, skipped = mod.merge_lookup(existing, reviewed, threshold=0.8)
+        final_rows, promoted, skipped = self.mod.merge_lookup(existing, reviewed, threshold=0.8)
 
         self.assertEqual([row["match_key"] for row in final_rows], ["A320", "B738"])
         self.assertEqual(len(promoted), 1)
@@ -93,7 +96,7 @@ class TestAutoPromoteAircraftReferences(unittest.TestCase):
             {"raw_value": "", "match_key": "A319"},
         ]
 
-        final_rows, promoted, skipped = mod.merge_aliases(existing, reviewed, threshold=0.75)
+        final_rows, promoted, skipped = self.mod.merge_aliases(existing, reviewed, threshold=0.75)
         self.assertEqual(final_rows, [{"raw_value": "airbus a320", "match_key": "A320"}, {"raw_value": "boeing 737", "match_key": "B738"}])
         self.assertEqual(len(promoted), 1)
         self.assertEqual(promoted[0]["raw_value"], "airbus a320")
@@ -115,8 +118,8 @@ class TestAutoPromoteAircraftReferences(unittest.TestCase):
                 writer.writeheader()
                 writer.writerow({"raw_value": " Airbus A320 ", "match_key": " a320 "})
 
-            lookup = mod.load_lookup_map(lookup_file)
-            aliases = mod.load_alias_map(alias_file)
+            lookup = self.mod.load_lookup_map(lookup_file)
+            aliases = self.mod.load_alias_map(alias_file)
 
         self.assertIn("A320", lookup)
         self.assertEqual(lookup["A320"]["normalized_type"], "Airbus A320")

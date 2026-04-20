@@ -1,23 +1,28 @@
 import csv
 import importlib.util
+import io
 import tempfile
 import unittest
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
 
 
 def load_module():
     module_path = Path(__file__).resolve().parents[1] / "scripts" / "validate_schema.py"
     spec = importlib.util.spec_from_file_location("validate_schema", module_path)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"Could not load module spec for {module_path}")
     module = importlib.util.module_from_spec(spec)
-    assert spec and spec.loader
     spec.loader.exec_module(module)
     return module
 
 
-mod = load_module()
-
-
 class TestValidateSchema(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.mod = load_module()
+
     def write_csv(self, path: Path, fieldnames, rows):
         with path.open("w", encoding="utf-8", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -26,7 +31,7 @@ class TestValidateSchema(unittest.TestCase):
                 writer.writerow(row)
 
     def test_check_required_columns_empty_rows(self):
-        errors = mod.check_required_columns(Path("dummy.csv"), [], {"match_key"})
+        errors = self.mod.check_required_columns(Path("dummy.csv"), [], {"match_key"})
         self.assertEqual(errors, ["dummy.csv: file is empty or has no header row"])
 
     def test_validate_lookup_reports_format_duplicates_and_bad_category(self):
@@ -41,7 +46,7 @@ class TestValidateSchema(unittest.TestCase):
                     {"match_key": "AA", "normalized_type": "Type C", "category": "Invalid Category", "tag1": "", "tag2": "", "tag3": ""},
                 ],
             )
-            errors = mod.validate_lookup(path)
+            errors = self.mod.validate_lookup(path)
 
         self.assertTrue(any("invalid match_key format 'A@'" in e for e in errors))
         self.assertTrue(any("duplicate match_key 'AA'" in e for e in errors))
@@ -60,7 +65,7 @@ class TestValidateSchema(unittest.TestCase):
                     {"raw_value": "Airbus", "match_key": "A@"},
                 ],
             )
-            errors = mod.validate_aliases(path)
+            errors = self.mod.validate_aliases(path)
 
         self.assertTrue(any("duplicate alias pair ('boeing 737', 'B738')" in e for e in errors))
         self.assertTrue(any("empty raw_value" in e for e in errors))
@@ -78,7 +83,7 @@ class TestValidateSchema(unittest.TestCase):
                     {"$ICAO": "DEF456", "$Registration": "N3", "$Operator": "Op", "$Type": "Type", "$ICAO Type": "A320", "#CMPG": "Civ", "Category": "Also Bad"},
                 ],
             )
-            errors = mod.validate_data_file(path)
+            errors = self.mod.validate_data_file(path)
 
         self.assertTrue(any("duplicate $ICAO 'ABC123'" in e for e in errors))
         self.assertTrue(any("2 row(s) with unrecognised Category values" in e for e in errors))
@@ -106,8 +111,10 @@ class TestValidateSchema(unittest.TestCase):
                 [{"$ICAO": "ABC123", "$Registration": "N1", "$Operator": "Op", "$Type": "Type", "$ICAO Type": "A320", "#CMPG": "Civ", "Category": "Invalid"}],
             )
 
-            result_non_strict = mod.main(["--lookup", str(lookup), "--aliases", str(aliases), "--data-files", str(data)])
-            result_strict = mod.main(["--lookup", str(lookup), "--aliases", str(aliases), "--data-files", str(data), "--strict"])
+            with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
+                result_non_strict = self.mod.main(["--lookup", str(lookup), "--aliases", str(aliases), "--data-files", str(data)])
+            with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
+                result_strict = self.mod.main(["--lookup", str(lookup), "--aliases", str(aliases), "--data-files", str(data), "--strict"])
 
         self.assertEqual(result_non_strict, 0)
         self.assertEqual(result_strict, 1)
