@@ -85,9 +85,12 @@ Column prefix conventions:
 Feel free to [open an issue](https://github.com/FugginOld/aircraft-taxonomy-db/issues) to report program bugs, incorrect aircraft taxonomy, or ideas for improving this repository. All contributions are welcome 🚀. Please consult the [contribution guidelines](CONTRIBUTING.md) for more information. You can also check out the [TODOS](TODOS.md) page if you want to contribute to this repository but need some ideas.
 
 > **Warning**
-> As also [explained above](#current-content), the current main datasets (`aircraft-taxonomy-db.csv` and `aircraft-taxonomy-pia.csv`) are automatically seeded and normalized from external sources and should not be manually edited. The derivative databases (`civ`, `mil`, `pol`, `gov`) are created automatically by a [GitHub Action](.github/workflows/create_db_derivatives.yaml) and must not be edited directly — any manual changes will be overwritten. For aircraft that are not captured by external sources, please submit additions via a proposed `aircraft-taxonomy-custom-db` contribution and ensure every submitted row follows the existing database column format exactly. Additionally, it is **not recommended** to edit CSV files in Microsoft Excel, as Excel will attempt to "fix" ICAO hexes and other fields. Use a code editor such as VS Code instead—press the period key `.` on any file in GitHub to open the web editor.
+> - The current main datasets (`aircraft-taxonomy-db.csv` and `aircraft-taxonomy-pia.csv`) are automatically seeded and normalized from external sources and should not be manually edited.
+> - The derivative databases (`civ`, `mil`, `pol`, `gov`) are created automatically by a [GitHub Action](.github/workflows/create_db_derivatives.yaml) and must not be edited directly — any manual changes will be overwritten.
+> - For aircraft not captured by external sources, please first open an issue to propose an `aircraft-taxonomy-custom-db` contribution path, then submit rows that follow the existing database column format exactly.
+> - It is **not recommended** to edit CSV files in Microsoft Excel, as Excel will attempt to "fix" ICAO hexes and other fields. Use a code editor such as VS Code instead—press the period key `.` on any file in GitHub to open the web editor.
 
-If you're creating a pull request with additions, please add them to the end of the file. We may sort the list periodically to group like planes together.
+If you're creating a pull request with additions to a future `aircraft-taxonomy-custom-db`, please add new rows to the end of the file. We may sort the list periodically to group like planes together.
 
 ## Disclaimer
 
