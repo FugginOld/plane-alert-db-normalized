@@ -71,9 +71,10 @@ jobs:
                  issue_number: issueNumber,
                  name: 'invalid'
                });
-             } catch (err) {
-               if (err.status === 404) {
-                 console.log("Label not found, nothing to remove.");
-               } else {
-                 throw err;
-               }
+              } catch (err) {
+                if (err.status === 404) {
+                  console.log("Label not found, nothing to remove.");
+                } else {
+                  throw err;
+                }
+              }
